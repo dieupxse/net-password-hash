@@ -40,7 +40,9 @@ public class PasswordHash : IPasswordHash
     private string GenerateSalt(int len) {
         if (len <=0 ) throw new Exception("Invalid salt length");
         var salt = "";
-        var randomByte = RandomNumberGenerator.GetBytes((int)Math.Ceiling((decimal)len/(decimal)2));
+        RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
+        var randomByte = new byte[(int)Math.Ceiling((decimal)len/(decimal)2)];
+        rng.GetBytes(randomByte);
         if (randomByte!=null) {
             return ByteToHexString(randomByte).Substring(0,len);
         } else {
